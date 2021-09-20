@@ -1,0 +1,30 @@
+:root {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  justify-content: center;
+  margin-top: 300px;
+}
+
+.question {
+  font-size: 50px;
+}
+
+.answers1 {
+  font-size: x-large;
+  margin: 50px;
+  margin-right: 200px;
+  margin-left: 200px;
+  display: block;
+}
+button {
+  background-color: aqua;
+  font-size: xx-large;
+  border-radius: 25px;
+}
+button:hover {
+  background-color: beige;
+  cursor: pointer;
+}
