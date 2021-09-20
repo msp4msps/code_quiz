@@ -5,26 +5,58 @@
 header {
   text-align: center;
   justify-content: center;
+  align-items: center;
   margin-top: 300px;
+  font-size: 50px;
 }
 
 .question {
   font-size: 50px;
 }
 
-.answers1 {
+/* .answers1 {
   font-size: x-large;
   margin: 50px;
   margin-right: 200px;
   margin-left: 200px;
   display: block;
-}
+} */
+
 button {
   background-color: aqua;
   font-size: xx-large;
   border-radius: 25px;
+  align-items: center;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+.answers1 {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 button:hover {
   background-color: beige;
   cursor: pointer;
+}
+
+.answerChoice {
+  margin-top: 40px;
+  color: grey;
+  font-size: xx-large;
+  border-top: solid 6px grey;
+  margin-left: 300px;
+  margin-right: 300px;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 30px;
 }
