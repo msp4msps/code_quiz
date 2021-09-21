@@ -60,3 +60,15 @@ nav {
   justify-content: space-between;
   font-size: 30px;
 }
+
+form {
+  visibility: hidden;
+  font-size: 50px;
+  justify-content: center;
+  text-align: center;
+}
+h3 {
+  font-size: 50px;
+  justify-content: center;
+  text-align: center;
+}

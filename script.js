@@ -3,8 +3,10 @@ var answerText = document.querySelector(".answers1");
 var startBTN = document.querySelector(".start-button");
 var timer = document.querySelector(".timer");
 var answerResponse = document.querySelector(".answerText");
-var body = document.querySelector("header");
+var form = document.querySelector("form");
+var allDone = document.querySelector(".allDone");
 let num = 0;
+var counter = 75;
 //Questions
 
 var questions = [
@@ -37,15 +39,26 @@ var questions = [
   },
 ];
 
+function startTime() {
+  return countdown;
+}
+
 //Function to create body from question
 function startQuiz() {
   const output = [];
   const answers = [];
-  var counter = 75;
-  setInterval(() => {
+
+  //SET THE INITIAL TIMER
+  var countdown = setInterval(() => {
+    if (counter === 0) {
+      clearInterval(countdown);
+      Done();
+    }
     timer.textContent = counter;
     counter--;
+    return countdown;
   }, 1000);
+  //SET THE INITIAL QUESTION
   var current = questions[num];
   answerText.textContent = "";
   startBTN.style.visibility = "hidden";
@@ -56,7 +69,8 @@ function startQuiz() {
     ${current.answers[letter]}`;
     answerText.appendChild(button);
   }
-  console.log(current.correctAnswer);
+
+  //SEE IF SELECTION IS CORRECT ANSWER
   answerText.addEventListener("click", function (event) {
     if (event.target.className === current.correctAnswer) {
       var div = document.createElement("div");
@@ -71,6 +85,7 @@ function startQuiz() {
       div.textContent = `Incorrect, correct answer ${current.correctAnswer}`;
       div.className = "answerChoice";
       answerResponse.appendChild(div);
+      //SUBTRACT TEN SECONDS FROM TIMER IF INCORRECT
       setTimeout(function () {
         counter = counter - 10;
         nextQuestion();
@@ -83,7 +98,6 @@ function startQuiz() {
   // finally combine our output list into one string of HTML and put it on the page
   questionText.textContent = output;
 }
-
 //Start Button
 
 startBTN.addEventListener("click", function () {
@@ -91,6 +105,9 @@ startBTN.addEventListener("click", function () {
   startQuiz();
 });
 
+//ADDING INITIALS WHEN ALL DONE
+
+// Move on to next Question IN LIST
 function nextQuestion() {
   num++;
   if (num < questions.length) {
@@ -106,12 +123,30 @@ function nextQuestion() {
       ${current.answers[letter]}`;
       answerText.appendChild(button);
     }
-
+    // add this question and its answers to the output
     output.push(` ${current.question}`);
 
     // finally combine our output list into one string of HTML and put it on the page
     questionText.textContent = output;
   } else {
-    console.log("We done");
+    Done();
   }
+}
+
+function Done() {
+  answerText.textContent = "";
+  answerResponse.textContent = "";
+  questionText.textContent = "";
+  var newText = document.createElement("h3");
+  form.style.visibility = "visible";
+  score = counter;
+  highScore(score);
+  newText.textContent = `All Done! Your score is ${counter}`;
+  allDone.appendChild(newText);
+  counter = "0";
+  timer.style.visibility = "hidden";
+}
+
+function highScore(score) {
+  localStorage.set;
 }
