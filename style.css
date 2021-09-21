@@ -72,3 +72,10 @@ h3 {
   justify-content: center;
   text-align: center;
 }
+.Submit {
+  background-color: green;
+}
+
+.viewHigh:hover {
+  cursor: pointer;
+}

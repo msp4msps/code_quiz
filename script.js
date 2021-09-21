@@ -6,6 +6,9 @@ var answerResponse = document.querySelector(".answerText");
 var form = document.querySelector("form");
 var allDone = document.querySelector(".allDone");
 var highScoreBTN = document.querySelector(".highScore");
+var highScorePage = document.querySelector(".viewHigh");
+var body = document.querySelector("header");
+var displayScores = document.querySelector(".highScores");
 let num = 0;
 var counter = 75;
 initialList = [];
@@ -14,31 +17,32 @@ scores = [];
 
 var questions = [
   {
-    question: "What it do?",
+    question: "Inside which HTML element do we put the JavaScript?",
     answers: {
-      a: "Nick Ross",
-      b: "Nick Ross",
-      c: "Nick Ross",
+      a: "<javascript>",
+      b: "<script>",
+      c: "<js>",
     },
-    correctAnswer: "b",
+    correctAnswer: "c",
   },
   {
-    question: "What it be?",
+    question: "Where is the correct place to insert a JavaScript?",
     answers: {
-      a: "Nick Ross",
-      b: "Nicksss Ross",
-      c: "Nick Rasdaoss",
+      a: "The <body> section",
+      b: "The <head> section",
+      c: "Both the head and body section are correct",
     },
-    correctAnswer: "b",
+    correctAnswer: "a",
   },
   {
-    question: "What it is?",
+    question:
+      "What is the correct syntax for referring to an external script called xxx.js?",
     answers: {
-      a: "Nick Ross",
-      b: "Nick Ross",
-      c: "Nick Ross",
+      a: " <script href=xxx.js>",
+      b: " <script name=xxx.js>",
+      c: " <script src=xxx.js>",
     },
-    correctAnswer: "b",
+    correctAnswer: "c",
   },
 ];
 
@@ -161,13 +165,54 @@ highScoreBTN.addEventListener("click", function (event) {
   if (initials !== null) {
     initialList = initials;
   }
-  var scoreList = JSON.parse(localStorage.getItem("score"));
-  if (scoreList !== null) {
-    scores = scoreList;
-  }
-  initialList.push(input.value);
-  console.log(score);
-  scores.push(score);
+  var newAdd = [
+    {
+      name: input.value,
+      score: score,
+    },
+  ];
+
+  initialList.push(newAdd);
+
+  // var scoreList = JSON.parse(localStorage.getItem("score"));
+  // if (scoreList !== null) {
+  //   scores = scoreList;
+  // }
+  // initialList.push(input.value);
+  // console.log(score);
+  // scores.push(score);
+
   localStorage.setItem("Initials", JSON.stringify(initialList));
-  localStorage.setItem("score", JSON.stringify(scores));
+  // localStorage.setItem("score", JSON.stringify(scores));
+  input.value = "";
+  var success = document.createElement("h1");
+  success.textContent = "Submitted!";
+  success.className = "Submit";
+  highScoreBTN.style.visibility = "hidden";
+  form.appendChild(success);
+  setTimeout(() => {
+    success.textContent = "";
+  }, 1000);
 });
+
+highScorePage.addEventListener("click", function (event) {
+  event.preventDefault();
+  init();
+});
+
+function init() {
+  var storedInitials = JSON.parse(localStorage.getItem("Initials"));
+  var storedScores = JSON.parse(localStorage.getItem("score"));
+
+  for (var i = 0; i < storedInitials.length; i++) {
+    var todo = JSON.stringify(storedInitials[i]);
+    console.log = todo;
+    var li = document.createElement("li");
+    li.textContent = todo;
+    answerText.textContent = "";
+    answerResponse.textContent = "";
+    questionText.textContent = "";
+    startBTN.style.visibility = "hidden";
+    displayScores.append(li);
+  }
+}
