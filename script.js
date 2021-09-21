@@ -5,8 +5,11 @@ var timer = document.querySelector(".timer");
 var answerResponse = document.querySelector(".answerText");
 var form = document.querySelector("form");
 var allDone = document.querySelector(".allDone");
+var highScoreBTN = document.querySelector(".highScore");
 let num = 0;
 var counter = 75;
+initialList = [];
+scores = [];
 //Questions
 
 var questions = [
@@ -140,13 +143,31 @@ function Done() {
   var newText = document.createElement("h3");
   form.style.visibility = "visible";
   score = counter;
-  highScore(score);
+  // highScore(score);
   newText.textContent = `All Done! Your score is ${counter}`;
   allDone.appendChild(newText);
   counter = "0";
   timer.style.visibility = "hidden";
 }
 
-function highScore(score) {
-  localStorage.set;
-}
+// function highScore(score) {
+//   localStorage.set;
+// }
+
+highScoreBTN.addEventListener("click", function (event) {
+  event.preventDefault();
+  var input = document.getElementById("fname");
+  var initials = JSON.parse(localStorage.getItem("Initials"));
+  if (initials !== null) {
+    initialList = initials;
+  }
+  var scoreList = JSON.parse(localStorage.getItem("score"));
+  if (scoreList !== null) {
+    scores = scoreList;
+  }
+  initialList.push(input.value);
+  console.log(score);
+  scores.push(score);
+  localStorage.setItem("Initials", JSON.stringify(initialList));
+  localStorage.setItem("score", JSON.stringify(scores));
+});
