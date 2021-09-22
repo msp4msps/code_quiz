@@ -10,7 +10,8 @@ var highScorePage = document.querySelector(".viewHigh");
 var body = document.querySelector("header");
 var displayScores = document.querySelector(".highScores");
 let num = 0;
-var counter = 75;
+var run = false;
+var counter = 150;
 initialList = [];
 scores = [];
 //Questions
@@ -23,7 +24,7 @@ var questions = [
       b: "<script>",
       c: "<js>",
     },
-    correctAnswer: "c",
+    correctAnswer: "b",
   },
   {
     question: "Where is the correct place to insert a JavaScript?",
@@ -44,16 +45,29 @@ var questions = [
     },
     correctAnswer: "c",
   },
+  {
+    question: "The external JavaScript file must contain the <script> tag.",
+    answers: {
+      a: "false",
+      b: "true",
+    },
+    correctAnswer: "b",
+  },
+  {
+    question: "How do you write Hello World in an alert box?",
+    answers: {
+      a: "alert(Hello World);",
+      b: "msgBox(Hello World)",
+      c: "msg(Hello World)",
+    },
+    correctAnswer: "a",
+  },
 ];
-
-function startTime() {
-  return countdown;
-}
 
 //Function to create body from question
 function startQuiz() {
-  const output = [];
-  const answers = [];
+  var output = [];
+  ran = true;
 
   //SET THE INITIAL TIMER
   var countdown = setInterval(() => {
@@ -63,9 +77,9 @@ function startQuiz() {
     }
     timer.textContent = counter;
     counter--;
-    return countdown;
   }, 1000);
   //SET THE INITIAL QUESTION
+
   var current = questions[num];
   answerText.textContent = "";
   startBTN.style.visibility = "hidden";
@@ -77,7 +91,7 @@ function startQuiz() {
     answerText.appendChild(button);
   }
 
-  //SEE IF SELECTION IS CORRECT ANSWER
+  // //SEE IF SELECTION IS CORRECT ANSWER
   answerText.addEventListener("click", function (event) {
     if (event.target.className === current.correctAnswer) {
       var div = document.createElement("div");
@@ -86,6 +100,7 @@ function startQuiz() {
       answerResponse.appendChild(div);
       setTimeout(function () {
         nextQuestion();
+        console.log("Testing1");
       }, 1000);
     } else {
       var div = document.createElement("div");
@@ -96,6 +111,7 @@ function startQuiz() {
       setTimeout(function () {
         counter = counter - 10;
         nextQuestion();
+        console.log("Testing3");
       }, 1000);
     }
   });
@@ -104,12 +120,14 @@ function startQuiz() {
 
   // finally combine our output list into one string of HTML and put it on the page
   questionText.textContent = output;
+  stop();
 }
 //Start Button
 
 startBTN.addEventListener("click", function () {
-  var body = document.querySelector("header");
-  startQuiz();
+  if (!run) {
+    startQuiz();
+  }
 });
 
 //ADDING INITIALS WHEN ALL DONE
@@ -117,6 +135,7 @@ startBTN.addEventListener("click", function () {
 // Move on to next Question IN LIST
 function nextQuestion() {
   num++;
+  answerResponse.textContent = "";
   if (num < questions.length) {
     const output = [];
     var current = questions[num];
@@ -124,16 +143,37 @@ function nextQuestion() {
     answerResponse.textContent = "";
     startBTN.style.visibility = "hidden";
     for (letter in current.answers) {
+      answerResponse.textContent = "";
       button = document.createElement("button");
       button.className = `${letter}`;
       button.textContent += `${letter} :
       ${current.answers[letter]}`;
       answerText.appendChild(button);
     }
+
+    answerText.addEventListener("click", function (event) {
+      if (event.target.className === current.correctAnswer) {
+        answerResponse.textContent = "";
+        var div = document.createElement("div");
+        div.textContent = "Correct";
+        div.className = "answerChoice";
+        answerResponse.appendChild(div);
+        setTimeout(function () {}, 1000);
+      } else {
+        var div = document.createElement("div");
+        answerResponse.textContent = "";
+        div.textContent = `Incorrect, correct answer ${current.correctAnswer}`;
+        div.className = "answerChoice";
+        answerResponse.appendChild(div);
+        //SUBTRACT TEN SECONDS FROM TIMER IF INCORRECT
+        setTimeout(function () {}, 1000);
+      }
+    });
+
     // add this question and its answers to the output
     output.push(` ${current.question}`);
 
-    // finally combine our output list into one string of HTML and put it on the page
+    // // finally combine our output list into one string of HTML and put it on the page
     questionText.textContent = output;
   } else {
     Done();
@@ -154,10 +194,7 @@ function Done() {
   timer.style.visibility = "hidden";
 }
 
-// function highScore(score) {
-//   localStorage.set;
-// }
-
+//Store High Score
 highScoreBTN.addEventListener("click", function (event) {
   event.preventDefault();
   var input = document.getElementById("fname");
@@ -174,16 +211,7 @@ highScoreBTN.addEventListener("click", function (event) {
 
   initialList.push(newAdd);
 
-  // var scoreList = JSON.parse(localStorage.getItem("score"));
-  // if (scoreList !== null) {
-  //   scores = scoreList;
-  // }
-  // initialList.push(input.value);
-  // console.log(score);
-  // scores.push(score);
-
   localStorage.setItem("Initials", JSON.stringify(initialList));
-  // localStorage.setItem("score", JSON.stringify(scores));
   input.value = "";
   var success = document.createElement("h1");
   success.textContent = "Submitted!";
@@ -202,7 +230,6 @@ highScorePage.addEventListener("click", function (event) {
 
 function init() {
   var storedInitials = JSON.parse(localStorage.getItem("Initials"));
-  var storedScores = JSON.parse(localStorage.getItem("score"));
 
   for (var i = 0; i < storedInitials.length; i++) {
     var todo = JSON.stringify(storedInitials[i]);
